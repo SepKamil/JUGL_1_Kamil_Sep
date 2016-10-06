@@ -87,7 +87,7 @@ public class JOGLZad1 implements GLEventListener {
 
         // Clear the drawing area
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        // Reset the current matrix to the "identity"
+       /* // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
         gl.glColor3f(0.4f,0.3f,0.5f);
         gl.glBegin(GL.GL_TRIANGLES);
@@ -101,6 +101,27 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(2.0f, 1.0f, -6.0f);
             gl.glVertex3f(2.0f, -1.0f, -6.0f);
             gl.glVertex3f(1.0f, -1.0f, -6.0f);
+        gl.glEnd();
+        */
+        gl.glColor3f(0.7f,0.1f,0.1f);
+        gl.glBegin(GL.GL_TRIANGLES);
+            gl.glVertex3f(-1.0f, 2.0f, -6.0f);
+            gl.glVertex3f(-3.0f, 1.0f, -6.0f);
+            gl.glVertex3f( 1.0f, 1.0f, -6.0f);
+        gl.glEnd();
+        gl.glColor3f(0.5f,0.4f,0.3f);
+        gl.glBegin(GL.GL_QUADS);
+            gl.glVertex3f(0.9f, 1.0f, -6.0f);
+            gl.glVertex3f(-2.9f, 1.0f, -6.0f);
+            gl.glVertex3f(-2.9f, -1.0f, -6.0f);
+            gl.glVertex3f(0.9f, -1.0f, -6.0f);
+        gl.glEnd();
+        gl.glColor3f(0.01f,0.7f,0.3f);
+        gl.glBegin(GL.GL_QUADS);
+            gl.glVertex3f(0.0f, 0.7f, -5.9f);
+            gl.glVertex3f(0.6f, 0.7f, -5.9f);
+            gl.glVertex3f(0.6f, -1.0f, -5.9f);
+            gl.glVertex3f(0.0f, -1.0f, -5.9f);
         gl.glEnd();
         
         gl.glFlush();
