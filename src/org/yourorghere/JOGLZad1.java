@@ -102,7 +102,7 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(2.0f, -1.0f, -6.0f);
             gl.glVertex3f(1.0f, -1.0f, -6.0f);
         gl.glEnd();
-        */
+        
         gl.glColor3f(0.7f,0.1f,0.1f);
         gl.glBegin(GL.GL_TRIANGLES);
             gl.glVertex3f(-1.0f, 2.0f, -6.0f);
@@ -123,10 +123,25 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(0.6f, -1.0f, -5.9f);
             gl.glVertex3f(0.0f, -1.0f, -5.9f);
         gl.glEnd();
-        
+        */
+        gl.glColor3f(0.01f,0.7f,0.3f);
+        rysowanieKolka(gl, 1.0f, 1.0f, 1.0f);
         gl.glFlush();
     }
 
+    public void rysowanieKolka(GL gl, float x, float y, float s){
+        float kat, p, q;
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glVertex3f(x,y,-6.0f); //œrodek
+        for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+        {
+            p = x+s*(float)Math.sin(kat);
+            q = y+s*(float)Math.cos(kat);
+            gl.glVertex3f(p, q, -6.0f); //kolejne punkty
+        }
+    gl.glEnd();
+    }
+    
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
 }
