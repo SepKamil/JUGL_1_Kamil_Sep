@@ -2,8 +2,6 @@ package org.yourorghere;
 
 import com.sun.opengl.util.Animator;
 import java.awt.Frame;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.media.opengl.GL;
@@ -21,9 +19,6 @@ import javax.media.opengl.glu.GLU;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 public class JOGLZad1 implements GLEventListener {
-    
-    //statyczne pola okreœlaj¹ce rotacjê wokó³ osi X i Y
-    private static float xrot = 0.0f, yrot = 0.0f;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -49,24 +44,6 @@ public class JOGLZad1 implements GLEventListener {
                 }).start();
             }
         });
-        
-        //Obs³uga klawiszy strza³ek
-    frame.addKeyListener(new KeyListener()
-    {
-        public void keyPressed(KeyEvent e)
-        {
-            if(e.getKeyCode() == KeyEvent.VK_UP)
-            xrot -= 1.0f;
-            if(e.getKeyCode() == KeyEvent.VK_DOWN)
-            xrot +=1.0f;
-            if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-            yrot += 1.0f;
-            if(e.getKeyCode() == KeyEvent.VK_LEFT)
-            yrot -=1.0f;
-        }
-        public void keyReleased(KeyEvent e){}
-        public void keyTyped(KeyEvent e){}
-    });
         // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -86,9 +63,6 @@ public class JOGLZad1 implements GLEventListener {
         // Setup the drawing area and shading mode
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
-        
-        //wy³¹czenie wewnêtrzych stron prymitywów
-        gl.glEnable(GL.GL_CULL_FACE);
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -150,10 +124,6 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(0.0f, -1.0f, -5.9f);
         gl.glEnd();
         */
-        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
-        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
-        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
-
         gl.glColor3f(0.01f,0.7f,0.3f);
         rysowanieKolka(gl, 1.0f, 1.0f, 1.0f);
         gl.glFlush();
