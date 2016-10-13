@@ -2,6 +2,8 @@ package org.yourorghere;
 
 import com.sun.opengl.util.Animator;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.media.opengl.GL;
@@ -19,6 +21,7 @@ import javax.media.opengl.glu.GLU;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 public class JOGLZad1 implements GLEventListener {
+    private static float xrot = 0.0f, yrot = 0.0f;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -44,6 +47,22 @@ public class JOGLZad1 implements GLEventListener {
                 }).start();
             }
         });
+        frame.addKeyListener(new KeyListener()
+        {
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_UP)
+                xrot -= 1.0f;
+                if(e.getKeyCode() == KeyEvent.VK_DOWN)
+                xrot +=1.0f;
+                if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+                yrot += 1.0f;
+                if(e.getKeyCode() == KeyEvent.VK_LEFT)
+                yrot -=1.0f;
+            }
+            public void keyReleased(KeyEvent e){}
+            public void keyTyped(KeyEvent e){}
+        });
         // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -63,6 +82,7 @@ public class JOGLZad1 implements GLEventListener {
         // Setup the drawing area and shading mode
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
+        gl.glEnable(GL.GL_CULL_FACE);
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -87,45 +107,13 @@ public class JOGLZad1 implements GLEventListener {
 
         // Clear the drawing area
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-       /* // Reset the current matrix to the "identity"
+       
         gl.glLoadIdentity();
-        gl.glColor3f(0.4f,0.3f,0.5f);
-        gl.glBegin(GL.GL_TRIANGLES);
-            gl.glVertex3f(-1.0f, 1.0f, -6.0f);
-            gl.glVertex3f(-2.0f,-1.0f, -6.0f);
-            gl.glVertex3f( 0.0f,-1.0f, -6.0f);
-        gl.glEnd();
-        gl.glColor3f(0.2f,0.8f,0.3f);
-        gl.glBegin(GL.GL_QUADS);
-            gl.glVertex3f(1.0f, 1.0f, -6.0f);
-            gl.glVertex3f(2.0f, 1.0f, -6.0f);
-            gl.glVertex3f(2.0f, -1.0f, -6.0f);
-            gl.glVertex3f(1.0f, -1.0f, -6.0f);
-        gl.glEnd();
-        
-        gl.glColor3f(0.7f,0.1f,0.1f);
-        gl.glBegin(GL.GL_TRIANGLES);
-            gl.glVertex3f(-1.0f, 2.0f, -6.0f);
-            gl.glVertex3f(-3.0f, 1.0f, -6.0f);
-            gl.glVertex3f( 1.0f, 1.0f, -6.0f);
-        gl.glEnd();
-        gl.glColor3f(0.5f,0.4f,0.3f);
-        gl.glBegin(GL.GL_QUADS);
-            gl.glVertex3f(0.9f, 1.0f, -6.0f);
-            gl.glVertex3f(-2.9f, 1.0f, -6.0f);
-            gl.glVertex3f(-2.9f, -1.0f, -6.0f);
-            gl.glVertex3f(0.9f, -1.0f, -6.0f);
-        gl.glEnd();
+        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
+        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
+        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
         gl.glColor3f(0.01f,0.7f,0.3f);
-        gl.glBegin(GL.GL_QUADS);
-            gl.glVertex3f(0.0f, 0.7f, -5.9f);
-            gl.glVertex3f(0.6f, 0.7f, -5.9f);
-            gl.glVertex3f(0.6f, -1.0f, -5.9f);
-            gl.glVertex3f(0.0f, -1.0f, -5.9f);
-        gl.glEnd();
-        */
-        gl.glColor3f(0.01f,0.7f,0.3f);
-        rysowanieKolka(gl, 1.0f, 1.0f, 1.0f);
+        rysowanieOstroslupa(gl);
         gl.glFlush();
     }
 
@@ -140,6 +128,83 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(p, q, -6.0f); //kolejne punkty
         }
     gl.glEnd();
+    }
+    
+    public void rysowanieOstroslupa(GL gl){
+        gl.glBegin(GL.GL_QUADS);//podstawa
+            gl.glColor3f(0.1f,0.4f,1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+        gl.glEnd();
+        gl.glBegin(GL.GL_TRIANGLES);
+            gl.glColor3f(0.3f,0.1f,0.5f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glVertex3f(0.0f, 0.0f, 0.0f);
+        gl.glEnd();
+        gl.glBegin(GL.GL_TRIANGLES);
+            gl.glColor3f(0.6f,0.2f,0.8f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(0.0f, 0.0f, 0.0f);
+        gl.glEnd();
+        gl.glBegin(GL.GL_TRIANGLES);
+            gl.glColor3f(0.2f,0.2f,0.2f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(0.0f, 0.0f, 0.0f);
+        gl.glEnd();
+        gl.glBegin(GL.GL_TRIANGLES);
+            gl.glColor3f(0.1f,0.8f,0.3f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(0.0f, 0.0f, 0.0f);
+        gl.glEnd();
+            
+    }
+    
+    public void rysowanieSzescianu(GL gl){
+        gl.glBegin(GL.GL_QUADS);
+            //œciana przednia
+            gl.glColor3f(1.0f,0.0f,0.0f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glVertex3f(-1.0f,1.0f,1.0f);
+            //sciana tylnia
+            gl.glColor3f(0.0f,1.0f,0.0f);
+            gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            //œciana lewa
+            gl.glColor3f(0.0f,0.0f,1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(-1.0f,1.0f,1.0f);
+            gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            //œciana prawa
+            gl.glColor3f(1.0f,1.0f,0.0f);
+            gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            //œciana dolna
+            gl.glColor3f(1.0f,0.0f,1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            //œciana górna
+            gl.glColor3f(0.1f,0.4f,1.0f);
+            gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            gl.glVertex3f(-1.0f,1.0f,1.0f);
+        gl.glEnd();
+
     }
     
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
