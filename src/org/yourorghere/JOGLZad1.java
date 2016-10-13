@@ -155,7 +155,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
 
         gl.glColor3f(0.01f,0.7f,0.3f);
-        rysowanieDziwaka(gl);
+        rysowanieKolka(gl, 1.0f, 1.0f, 1.0f);
         gl.glFlush();
     }
 
@@ -170,26 +170,6 @@ public class JOGLZad1 implements GLEventListener {
             gl.glVertex3f(p, q, -6.0f); //kolejne punkty
         }
     gl.glEnd();
-    
-    
-    }
-    
-    public void rysowanieDziwaka(GL gl){
-        float kat, p, q;
-        gl.glBegin(GL.GL_LINE_STRIP);
-        gl.glVertex3f(-1.0f,0.0f,-6.0f); //pocz¹tek
-        for(kat = 0.0f; kat <= (3.0f*Math.PI);kat+=(Math.PI/32.0f))
-        {
-            p = 0.3f*kat-1.0f;
-            q = 0.3f*(float)Math.sin(kat);
-            gl.glVertex3f(p, q, -6.0f); //kolejne punkty
-        }
-        gl.glVertex3f((float) 0.3f*kat-1.0f, 0.3f*(float)Math.sin(3.0f*Math.PI)-1.0f, -6.0f);
-        gl.glVertex3f((float) -1.0f, 0.3f*(float)Math.sin(3.0f*Math.PI)-1.0f, -6.0f);
-        gl.glVertex3f((float) -1.0f, 0.3f*(float)Math.sin(3.0f*Math.PI), -6.0f);
-    gl.glEnd();
-    
-    
     }
     
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
