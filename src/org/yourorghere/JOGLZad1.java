@@ -113,7 +113,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
         
-        rysowanieWalca(gl);
+        rysowanieSzescianu(gl);
         gl.glFlush();
     }
     
