@@ -112,9 +112,46 @@ public class JOGLZad1 implements GLEventListener {
         gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
-        gl.glColor3f(0.01f,0.7f,0.3f);
-        rysowanieOstroslupa(gl);
+        
+        rysowanieWalca(gl);
         gl.glFlush();
+    }
+    
+    public void rysowanieWalca(GL gl){
+        float kat, p, q;
+        float x=0.0f;
+        float z=0.0f;
+        float s=1.0f;
+        gl.glColor3f(0.01f,0.7f,0.3f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,-1.0f,z); //œrodek
+            for(kat = (float) (2.0f*Math.PI); kat >0.0f;kat-=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -1.0f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        gl.glColor3f(0.01f,0.3f,0.5f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,2.0f,z); //œrodek
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, 2.0f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        gl.glColor3f(0.6f,0.3f,0.2f);
+        gl.glBegin(GL.GL_QUAD_STRIP);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, 2.0f, q); //kolejne punkty
+                gl.glVertex3f(p, -1.0f, q); //kolejne punkty
+            }
+        gl.glEnd();
     }
 
     public void rysowanieKolka(GL gl, float x, float y, float s){
