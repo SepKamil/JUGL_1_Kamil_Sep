@@ -82,7 +82,7 @@ public class JOGLZad1 implements GLEventListener {
         // Setup the drawing area and shading mode
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
-        gl.glEnable(GL.GL_CULL_FACE);
+       // gl.glEnable(GL.GL_CULL_FACE);
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -113,10 +113,227 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
         
-        rysowanieStozka(gl);
+        rysowanieMorgenszternu(gl);
         gl.glFlush();
     }
     
+    public void rysowanieMorgenszternu(GL gl){
+        float kat, p, q;
+        float x=0.0f;
+        float z=0.0f;
+        float s=0.07f;
+        /*gl.glColor3f(0.01f,0.7f,0.3f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,-0.4f,z); //œrodek
+            for(kat = (float) (2.0f*Math.PI); kat >0.0f;kat-=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }*/
+        gl.glEnd();//góra
+        gl.glColor3f(0.4f,0.8f,0.5f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,0.4f,z);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        gl.glColor3f(0.4f,0.1f,0.8f);//dó³
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,-1.2f,z);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+     
+        gl.glColor3f(0.8f,0.2f,0.8f);//lewo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(-0.8f,-0.4f,z);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(0.0f, p-0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        gl.glColor3f(0.2f,0.0f,0.3f);//prawo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(0.8f,-0.4f,z);
+            for(kat = (float) (2.0f*Math.PI); kat >0.0f;kat-=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(0.0f, p-0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        
+ 
+        gl.glColor3f(0.0f,0.5f,0.9f);//przód
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(0.0f,-0.4f,0.8f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.4f,0.9f,0.5f);//ty³
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(0.0f,-0.4f,-0.8f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.1f,0.1f,0.1f);//ty³-lewo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(0.6f,-0.4f,0.6f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.5f,0.1f,0.1f);//ty³-prawo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(-0.6f,-0.4f,0.6f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.5f,0.1f,0.7f);//przód-prawo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(0.6f,-0.4f,-0.6f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.5f,0.7f,0.2f);//przód-lewo
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(-0.6f,-0.4f,-0.6f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(q, p-0.4f, 0.0f); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glEnd();//góra-lewo-przód
+        gl.glColor3f(0.4f,0.0f,0.5f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x-0.4f,0.0f,z+0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+       gl.glEnd();
+       
+       gl.glEnd();//góra-prawo-przód
+        gl.glColor3f(0.1f,0.3f,0.5f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x+0.4f,0.0f,z+0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+       gl.glEnd();
+       
+       gl.glEnd();//góra-prawo-ty³
+        gl.glColor3f(0.1f,0.3f,0.8f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x+0.4f,0.0f,z-0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+       gl.glEnd();
+       
+       gl.glEnd();//góra-lewo-ty³
+        gl.glColor3f(0.9f,0.3f,0.2f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x-0.4f,0.0f,z-0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+       gl.glEnd();
+       
+        gl.glColor3f(0.1f,0.5f,0.2f);//dó³-lewo-przód
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x-0.4f,-0.8f,z+0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.1f,0.9f,0.9f);//dó³-prawo-przód
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x+0.4f,-0.8f,z+0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.9f,0.4f,0.0f);//dó³-prawo-ty³
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x+0.4f,-0.8f,z-0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        
+        gl.glColor3f(0.4f,0.4f,0.9f);//dó³-lewo-ty³
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x-0.4f,-0.8f,z-0.4f);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -0.4f, q); //kolejne punkty
+            }
+        gl.glEnd();
+    
+    }
     public void rysowanieStozka(GL gl){
         float kat, p, q;
         float x=0.0f;
@@ -143,6 +360,8 @@ public class JOGLZad1 implements GLEventListener {
             }
         gl.glEnd();
     }
+    
+    
     
     public void rysowanieWalca(GL gl){
         float kat, p, q;
