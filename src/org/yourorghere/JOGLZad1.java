@@ -113,8 +113,35 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
         
-        rysowanieSzescianu(gl);
+        rysowanieStozka(gl);
         gl.glFlush();
+    }
+    
+    public void rysowanieStozka(GL gl){
+        float kat, p, q;
+        float x=0.0f;
+        float z=0.0f;
+        float s=1.0f;
+        gl.glColor3f(0.01f,0.7f,0.3f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,-1.0f,z); //œrodek
+            for(kat = (float) (2.0f*Math.PI); kat >0.0f;kat-=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -1.0f, q); //kolejne punkty
+            }
+        gl.glEnd();
+        gl.glColor3f(0.4f,0.3f,0.5f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+            gl.glVertex3f(x,1.0f,z);
+            for(kat = 0.0f; kat < (2.0f*Math.PI);kat+=(Math.PI/32.0f))
+            {
+                p = x+s*(float)Math.sin(kat);
+                q = z+s*(float)Math.cos(kat);
+                gl.glVertex3f(p, -1.0f, q); //kolejne punkty
+            }
+        gl.glEnd();
     }
     
     public void rysowanieWalca(GL gl){
