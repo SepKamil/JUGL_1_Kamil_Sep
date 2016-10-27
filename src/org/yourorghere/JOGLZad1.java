@@ -30,6 +30,7 @@ public class JOGLZad1 implements GLEventListener {
     static float diffuseLight[] = { 0.7f, 0.7f, 0.7f, 1.0f };//?wiat³o rozproszone
     static float specular[] = { 1.0f, 1.0f, 1.0f, 1.0f}; //?wiat³o odbite
     static float lightPos[] = { 0.0f, 150.0f, 150.0f, 1.0f };//pozycja ?wiat³a
+    static int inf = 0;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -80,6 +81,10 @@ public class JOGLZad1 implements GLEventListener {
                     specular=new float[] {specular[0]-0.1f, specular[0]-0.1f, specular[0]-0.1f, 1};
                 if(e.getKeyChar() == 'n')
                     specular=new float[] {specular[0]+0.1f, specular[0]+0.1f, specular[0]+0.1f, 1};
+                if(e.getKeyChar() == 'p'){
+                    if(inf==0) inf=1;
+                    else inf=0;
+                }
             }
             public void keyReleased(KeyEvent e){}
             public void keyTyped(KeyEvent e){}
@@ -182,12 +187,12 @@ public class JOGLZad1 implements GLEventListener {
         gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
-        gl.glLightfv(GL.GL_LIGHT0,GL.GL_AMBIENT,ambientLight,0); //swiat³o otaczajšce
-        gl.glLightfv(GL.GL_LIGHT0,GL.GL_DIFFUSE,diffuseLight,0); //?wiat³o rozproszone
-        gl.glLightfv(GL.GL_LIGHT0,GL.GL_SPECULAR,specular,0); //?wiat³o odbite
-        gl.glLightfv(GL.GL_LIGHT0,GL.GL_POSITION,lightPos,0); //pozycja ?wiat³a
+        gl.glLightfv(GL.GL_LIGHT0,GL.GL_AMBIENT,ambientLight,inf); //swiat³o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT0,GL.GL_DIFFUSE,diffuseLight,inf); //?wiat³o rozproszone
+        gl.glLightfv(GL.GL_LIGHT0,GL.GL_SPECULAR,specular,inf); //?wiat³o odbite
+        gl.glLightfv(GL.GL_LIGHT0,GL.GL_POSITION,lightPos,inf); //pozycja ?wiat³a
         
-        rysowanieOstroslupa(gl);
+        rysowanieWalca(gl);
         gl.glFlush();
     }
     
