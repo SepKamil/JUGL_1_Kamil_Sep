@@ -26,8 +26,8 @@ public class JOGLZad1 implements GLEventListener {
     public static float ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};//swiat?o otaczajšce
     public static float diffuseLight[] = {0.7f, 0.7f, 0.7f, 1.0f};//?wiat?o rozproszone
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat?o odbite
-    public static float lightPos[] = {0.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat?a
-    public static float lightPos2[] = {-150.0f, -150.0f, 0.0f, 1.0f};//pozycja ?wiat?a
+    public static float lightPos[] = {0.0f, 12.0f, 9.0f, 1.0f};//pozycja ?wiat?a
+    public static float lightPos2[] = {-12.0f, 2.0f, 0.0f, 1.0f};//pozycja ?wiat?a
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -91,6 +91,18 @@ public class JOGLZad1 implements GLEventListener {
                 if (e.getKeyChar() == 'm') {
                     lightPos[3] = 1;
                 }
+                if (e.getKeyChar() == 'l') {
+                    lightPos[0] = lightPos[0]+4f;
+                }
+                if (e.getKeyChar() == 'k') {
+                    lightPos[0] = lightPos[0]-4f;
+                }
+                if (e.getKeyChar() == 'o') {
+                    lightPos2[0] = lightPos2[0]+4f;
+                }
+                if (e.getKeyChar() == 'p') {
+                    lightPos2[0] = lightPos2[0]-4f;
+                }
 
             }
 
@@ -121,16 +133,16 @@ public class JOGLZad1 implements GLEventListener {
         //0.0f-niesko?czona; 1.0f-okre?lona przez pozosta?e parametry)
         gl.glEnable(GL.GL_LIGHTING); //uaktywnienie o?wietlenia
         //ustawienie parametrów ?ród?a ?wiat?a nr. 0
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambientLight, 0); //swiat?o otaczajšce
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuseLight, 0); //?wiat?o rozproszone
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0); //?wiat?o odbite
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0); //pozycja ?wiat?a
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambientLight, 1); //swiat?o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuseLight, 1); //?wiat?o rozproszone
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 1); //?wiat?o odbite
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 1); //pozycja ?wiat?a
         gl.glEnable(GL.GL_LIGHT0); //uaktywnienie ?ród?a ?wiat?a nr. 0
 
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 0); //swiat?o otaczajšce
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 0); //?wiat?o rozproszone
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 0); //?wiat?o odbite
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 0); //pozycja ?wiat?a
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 1); //swiat?o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 1); //?wiat?o rozproszone
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 1); //?wiat?o odbite
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 1); //pozycja ?wiat?a
         gl.glEnable(GL.GL_LIGHT1); //uaktywnienie ?ród?a ?wiat?a nr. 0
 
         gl.glEnable(GL.GL_COLOR_MATERIAL); //uaktywnienie ?ledzenia kolorów
@@ -157,11 +169,13 @@ public class JOGLZad1 implements GLEventListener {
 
             height = 1;
         }
+        
         final float h = (float) width / (float) height;
+        
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(45.0f, h, 1.0, 20.0);
+        glu.gluPerspective(45.0f, h, 2.0, 20.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -173,6 +187,10 @@ public class JOGLZad1 implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuseLight, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0);
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 1); //swiat?o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 1); //?wiat?o rozproszone
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 1); //?wiat?o odbite
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 1); //pozycja ?wiat?a
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
