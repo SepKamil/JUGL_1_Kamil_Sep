@@ -18,12 +18,7 @@ import javax.media.opengl.glu.GLU;
 
 
 
-/**
- * JOGLZad1.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel) <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
- */
+
 public class JOGLZad1 implements GLEventListener {
     private static float xrot = 0.0f, yrot = 0.0f;
     static float ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };//swiat³o otaczajšce
@@ -191,8 +186,14 @@ public class JOGLZad1 implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_DIFFUSE,diffuseLight,inf); //?wiat³o rozproszone
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_SPECULAR,specular,inf); //?wiat³o odbite
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_POSITION,lightPos,inf); //pozycja ?wiat³a
-        
-        rysowanieWalca(gl);
+       /* 
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_AMBIENT,ambientLight,inf); //swiat³o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_DIFFUSE,diffuseLight,inf); //?wiat³o rozproszone
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_SPECULAR,specular,inf); //?wiat³o odbite
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_POSITION,lightPos,inf); //pozycja ?wiat³a
+        */
+
+        rysujDrzewo(gl);
         gl.glFlush();
     }
     
@@ -439,7 +440,81 @@ public class JOGLZad1 implements GLEventListener {
             }
         gl.glEnd();
     }
-    
+    public void rysujDrzewo(GL gl){
+        gl.glColor3f(0.14f,0.55f,0.13f);
+        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+        gl.glTranslatef(0.0f,0.0f,-1.0f);
+        stozek(gl);
+        gl.glTranslatef(0.0f,0.0f,1.0f);
+        gl.glScalef(1.2f, 1.2f, 1.2f);
+        stozek(gl);
+        gl.glTranslatef(0.0f,0.0f,1.0f);
+        gl.glScalef(1.2f, 1.2f, 1.2f);
+        stozek(gl);
+        gl.glTranslatef(0.0f,0.0f,1.0f);
+        gl.glColor3f(0.55f,0.27f,0.08f);
+        walec(gl);
+    }
+    public void walec(GL gl) {
+//wywo³ujemy automatyczne normalizowanie normalnych
+//bo operacja skalowania je zniekszta³ci
+        gl.glEnable(GL.GL_NORMALIZE);
+        float x, y, kat;
+        gl.glBegin(GL.GL_QUAD_STRIP);
+        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = 0.5f * (float) Math.sin(kat);
+            y = 0.5f * (float) Math.cos(kat);
+            gl.glNormal3f((float) Math.sin(kat), (float) Math.cos(kat), 0.0f);
+            gl.glVertex3f(x, y, -1.0f);
+            gl.glVertex3f(x, y, 0.0f);
+        }
+        gl.glEnd();
+        gl.glNormal3f(0.0f, 0.0f, -1.0f);
+        x = y = kat = 0.0f;
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glVertex3f(0.0f, 0.0f, -1.0f); //srodek kola
+        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = 0.5f * (float) Math.sin(kat);
+            y = 0.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, -1.0f);
+        }
+        gl.glEnd();
+        gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        x = y = kat = 0.0f;
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glVertex3f(0.0f, 0.0f, 0.0f); //srodek kola
+        for (kat = 2.0f * (float) Math.PI; kat > 0.0f; kat -= (Math.PI / 32.0f)) {
+            x = 0.5f * (float) Math.sin(kat);
+            y = 0.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, 0.0f);
+        }
+        gl.glEnd();
+    }
+
+    public void stozek(GL gl) {
+//wywo³ujemy automatyczne normalizowanie normalnych
+        gl.glEnable(GL.GL_NORMALIZE);
+        float x, y, kat;
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glVertex3f(0.0f, 0.0f, -2.0f); //wierzcholek stozka
+        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = (float) Math.sin(kat);
+            y = (float) Math.cos(kat);
+            gl.glNormal3f((float) Math.sin(kat), (float) Math.cos(kat), -2.0f);
+            gl.glVertex3f(x, y, 0.0f);
+        }
+        gl.glEnd();
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        gl.glVertex3f(0.0f, 0.0f, 0.0f); //srodek kola
+        for (kat = 2.0f * (float) Math.PI; kat > 0.0f; kat -= (Math.PI / 32.0f)) {
+            x = (float) Math.sin(kat);
+            y = (float) Math.cos(kat);
+            gl.glVertex3f(x, y, 0.0f);
+        }
+        gl.glEnd();
+    }
+
     
     
     public void rysowanieWalca(GL gl){
@@ -447,6 +522,7 @@ public class JOGLZad1 implements GLEventListener {
         float x=0.0f;
         float z=0.0f;
         float s=1.0f;
+        gl.glEnable(GL.GL_NORMALIZE);
         gl.glColor3f(0.01f,0.7f,0.3f);
         gl.glBegin(GL.GL_TRIANGLE_FAN);
                 p = x+s*(float)Math.sin(Math.PI*(31/32));
