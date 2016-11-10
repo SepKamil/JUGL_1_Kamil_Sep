@@ -28,6 +28,7 @@ public class JOGLZad1 implements GLEventListener {
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat?o odbite
     public static float lightPos[] = {0.0f, 12.0f, 9.0f, 1.0f};//pozycja ?wiat?a
     public static float lightPos2[] = {-12.0f, 2.0f, 0.0f, 1.0f};//pozycja ?wiat?a
+    public static Koparka kop;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -103,9 +104,35 @@ public class JOGLZad1 implements GLEventListener {
                 if (e.getKeyChar() == 'p') {
                     lightPos2[0] = lightPos2[0]-4f;
                 }
+                if(e.getKeyChar() == '1')
+                    kop.zmienKat1(3.0f);
 
-            }
+                if(e.getKeyChar() == '2')
+                    kop.zmienKat1(-3.0f);
+                
+                if(e.getKeyChar() == '3')
+                    kop.zmienKat2(3.0f);
 
+                if(e.getKeyChar() == '4')
+                    kop.zmienKat2(-3.0f);
+                
+                if(e.getKeyChar() == '5')
+                    kop.zmienKat3(3.0f);
+
+                if(e.getKeyChar() == '6')
+                    kop.zmienKat3(-3.0f);
+                
+                if(e.getKeyChar() == '7')
+                    kop.zmienKat4(3.0f);
+
+                if(e.getKeyChar() == '8')
+                    kop.zmienKat4(-3.0f);
+                            
+
+                
+
+            
+                }
             public void keyReleased(KeyEvent e) {
             }
 
@@ -121,6 +148,7 @@ public class JOGLZad1 implements GLEventListener {
     public void init(GLAutoDrawable drawable) {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
+        kop = new Koparka();
 
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
@@ -143,7 +171,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 1); //?wiat?o rozproszone
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 1); //?wiat?o odbite
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 1); //pozycja ?wiat?a
-        gl.glEnable(GL.GL_LIGHT1); //uaktywnienie ?ród?a ?wiat?a nr. 0
+        //gl.glEnable(GL.GL_LIGHT1); //uaktywnienie ?ród?a ?wiat?a nr. 0
 
         gl.glEnable(GL.GL_COLOR_MATERIAL); //uaktywnienie ?ledzenia kolorów
         //kolory b?dš ustalane za pomocš glColor
@@ -175,7 +203,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(45.0f, h, 2.0, 20.0);
+        glu.gluPerspective(100.0f, h, 2.0, 20.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -194,17 +222,18 @@ public class JOGLZad1 implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuni?cie o 6 jednostek
+        gl.glTranslatef(0.0f, 0.0f, -8.0f); //przesuni?cie o 6 jednostek
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
-        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+         
+       /* gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
         gl.glScalef(0.3f, 0.3f, 0.3f);
-        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
+       
         gl.glPushMatrix();
         
-        for (int j = 0; j < 10; j++) {
+        /*for (int j = 0; j < 10; j++) {
             gl.glPushMatrix();
             for (int i = 0; i < 10; i++) {
                 drzewo(gl);
@@ -215,7 +244,8 @@ public class JOGLZad1 implements GLEventListener {
         }
         gl.glPopMatrix();
         gl.glTranslatef(-7.5f, -7.5f, 0.0f);
-
+*/
+        kop.Rysuj(gl);
     }
     void drzewo(GL gl) {
         gl.glColor3f(0.14f,0.55f,0.13f);
