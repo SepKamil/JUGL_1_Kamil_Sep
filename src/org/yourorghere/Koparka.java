@@ -11,28 +11,66 @@ public class Koparka {
     public float kat4=0;
 
     
-    public void zmienKat1(float change){
+    public boolean zmienKat1(float change){
         if(change>0){
-            if(kat1+change<30) kat1+=change;       
+            if(kat1+change<30){
+                kat1+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
         }
         else{
-            if(kat1+change>-50) kat1+=change;
+            if(kat1+change>-50){
+                kat1+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
         }
     }
-    public void zmienKat2(float change){
+    public boolean zmienKat2(float change){
         if(change>0){
-            if(kat2+change<30) kat2+=change;       
+            if(kat2+change<30){
+                kat2+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
         }
         else{
-            if(kat2+change>-50) kat2+=change;
+            if(kat2+change>-50){
+                kat2+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
         }
     }
-    public void zmienKat3(float change){
+    public boolean zmienKat3(float change){
         if(change>0){
-            if(kat3+change<45) kat3+=change;       
+            if(kat3+change<45){
+                kat3+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
+            
         }
         else{
-            if(kat3+change>-90) kat3+=change;
+            if(kat3+change>-90){
+                
+                kat3+=change;
+                return false;
+            }
+            else{
+                return true;
+            }
         }
     }
     public void zmienKat4(float change){
@@ -43,8 +81,9 @@ public class Koparka {
             if(kat4+change>-45) kat4+=change;
         }
     
-    }
     
+    
+    }
     public void Rysuj(GL gl)
     {
         //ciagnik
