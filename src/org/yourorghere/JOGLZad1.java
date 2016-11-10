@@ -29,6 +29,7 @@ public class JOGLZad1 implements GLEventListener {
     public static float lightPos[] = {0.0f, 12.0f, 9.0f, 1.0f};//pozycja ?wiat?a
     public static float lightPos2[] = {-12.0f, 2.0f, 0.0f, 1.0f};//pozycja ?wiat?a
     public static Koparka kop;
+    public static int czas=0;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -245,6 +246,10 @@ public class JOGLZad1 implements GLEventListener {
         gl.glPopMatrix();
         gl.glTranslatef(-7.5f, -7.5f, 0.0f);
 */
+
+            kop.zmienKat1(-0.04f);
+            kop.zmienKat2(-0.04f);
+            kop.zmienKat3(-0.03f);
         kop.Rysuj(gl);
     }
     void drzewo(GL gl) {
