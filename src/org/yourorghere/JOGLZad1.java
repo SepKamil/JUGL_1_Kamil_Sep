@@ -11,6 +11,13 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
+import java.io.File;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
 
 /**
  * SimpleJOGL.java <BR>
@@ -30,6 +37,8 @@ public class JOGLZad1 implements GLEventListener {
     public static float lightPos2[] = {-12.0f, 2.0f, 0.0f, 1.0f};//pozycja ?wiat?a
     public static Koparka kop;
     public static int czas=0;
+    static BufferedImage image1 = null,image2 = null;
+    static Texture t1 = null, t2 = null;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -175,6 +184,7 @@ public class JOGLZad1 implements GLEventListener {
         //gl.glEnable(GL.GL_LIGHT1); //uaktywnienie ?ród?a ?wiat?a nr. 0
 
         gl.glEnable(GL.GL_COLOR_MATERIAL); //uaktywnienie ?ledzenia kolorów
+        gl.glEnable(GL.GL_TEXTURE_2D);
         //kolory b?dš ustalane za pomocš glColor
         gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
         //Ustawienie jasno?ci i odblaskowo?ci obiektów
@@ -187,6 +197,26 @@ public class JOGLZad1 implements GLEventListener {
         // Setup the drawing area and shading mode
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
+        try
+        {
+            image1 = ImageIO.read(getClass().getResourceAsStream("/pokemon.jpg"));
+            image2 = ImageIO.read(getClass().getResourceAsStream("/android.jpg"));
+        } catch (Exception exc) {
+            JOptionPane.showMessageDialog(null, exc.toString());
+            return;
+        }
+
+        t1 = TextureIO.newTexture(image1, false);
+        t2 = TextureIO.newTexture(image2, false);
+
+        gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND | GL.GL_MODULATE);
+        gl.glEnable(GL.GL_TEXTURE_2D);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+        
+        
 
     }
 
@@ -204,7 +234,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(100.0f, h, 2.0, 20.0);
+        glu.gluPerspective(30.0f, h, 2.0, 10.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -228,7 +258,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
-         
+        rysowanieSzescianu(gl);
        /* gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
         gl.glScalef(0.3f, 0.3f, 0.3f);
        
@@ -247,10 +277,12 @@ public class JOGLZad1 implements GLEventListener {
         gl.glTranslatef(-7.5f, -7.5f, 0.0f);
 */
 
-            kop.zmienKat1(-0.04f);
+            /*kop.zmienKat1(-0.04f);
             kop.zmienKat2(-0.04f);
             kop.zmienKat3(-0.03f);
-        kop.Rysuj(gl);
+        kop.Rysuj(gl);*/
+        
+        
     }
     void drzewo(GL gl) {
         gl.glColor3f(0.14f,0.55f,0.13f);
@@ -730,56 +762,89 @@ public class JOGLZad1 implements GLEventListener {
         gl.glEnd();
             
     }
-    
+    */
+    public float[] WyznaczNormalna(float[] punkty, int ind1, int ind2, int ind3) {
+         float[] norm = new float[3];
+         float[] wektor0 = new float[3];
+         float[] wektor1 = new float[3];
+ 
+         for (int i = 0; i < 3; i++) {
+             wektor0[i] = punkty[i + ind1] - punkty[i + ind2];
+             wektor1[i] = punkty[i + ind2] - punkty[i + ind3];
+         }
+ 
+         norm[0] = wektor0[1] * wektor1[2] - wektor0[2] * wektor1[1];
+         norm[1] = wektor0[2] * wektor1[0] - wektor0[0] * wektor1[2];
+         norm[2] = wektor0[0] * wektor1[1] - wektor0[1] * wektor1[0];
+         float d
+                 = (float) Math.sqrt((norm[0] * norm[0]) + (norm[1] * norm[1]) + (norm[2] * norm[2]));
+         if (d == 0.0f) {
+             d = 1.0f;
+         }
+         norm[0] /= d;
+         norm[1] /= d;
+         norm[2] /= d;
+ 
+         return norm;
+     }
     public void rysowanieSzescianu(GL gl){
         float[] sciana1={-1.0f,-1.0f,1.0f,
                         1.0f,-1.0f,1.0f,
                         1.0f,1.0f,1.0f};
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
         gl.glBegin(GL.GL_QUADS);
             //œciana przednia
             float[] norm1=WyznaczNormalna(sciana1, 0, 3, 6);
             gl.glNormal3fv(norm1,0);
-            gl.glColor3f(1.0f,0.0f,0.0f);
-            gl.glVertex3f(-1.0f,-1.0f,1.0f);
-            gl.glVertex3f(1.0f,-1.0f,1.0f);
-            gl.glVertex3f(1.0f,1.0f,1.0f);
-            gl.glVertex3f(-1.0f,1.0f,1.0f);
-
-
+            //gl.glColor3f(1.0f,0.0f,0.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f,1.0f,1.0f);
+            
+        gl.glEnd();
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
+        gl.glBegin(GL.GL_QUADS);
+          
             float[] sciana2={-1.0f,1.0f,-1.0f,
                         1.0f,1.0f,-1.0f,
                         1.0f,-1.0f,-1.0f};
             float[] norm2=WyznaczNormalna(sciana2, 0, 3, 6);
             gl.glNormal3fv(norm2,0);
             //sciana tylnia
-            gl.glColor3f(0.0f,1.0f,0.0f);
-            gl.glVertex3f(-1.0f,1.0f,-1.0f);
-            gl.glVertex3f(1.0f,1.0f,-1.0f);
-            gl.glVertex3f(1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            //gl.glColor3f(0.0f,1.0f,0.0f);
+                         
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f,-1.0f,-1.0f);
             //œciana lewa
             float[] sciana3={-1.0f,-1.0f,-1.0f,
                         -1.0f,-1.0f,1.0f,
                         -1.0f,1.0f,1.0f};
             float[] norm3=WyznaczNormalna(sciana3, 0, 3, 6);
             gl.glNormal3fv(norm3,0);
-            gl.glColor3f(0.0f,0.0f,1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,1.0f);
-            gl.glVertex3f(-1.0f,1.0f,1.0f);
-            gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            //gl.glColor3f(0.0f,0.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f,1.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f,1.0f,-1.0f);
             //œciana prawa
+            
+        gl.glEnd();
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t2.getTextureObject());
+        gl.glBegin(GL.GL_QUADS);
             float[] sciana4={1.0f,1.0f,-1.0f,
                         1.0f,1.0f,1.0f,
                         1.0f,-1.0f,1.0f};
             float[] norm4=WyznaczNormalna(sciana4, 0, 3, 6);
             gl.glNormal3fv(norm4,0);
             
-            gl.glColor3f(1.0f,1.0f,0.0f);
-            gl.glVertex3f(1.0f,1.0f,-1.0f);
-            gl.glVertex3f(1.0f,1.0f,1.0f);
-            gl.glVertex3f(1.0f,-1.0f,1.0f);
-            gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            //gl.glColor3f(1.0f,1.0f,0.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(1.0f,-1.0f,-1.0f);
             //œciana dolna
             float[] sciana5={-1.0f,-1.0f,1.0f,
                         -1.0f,-1.0f,-1.0f,
@@ -787,11 +852,11 @@ public class JOGLZad1 implements GLEventListener {
             float[] norm5=WyznaczNormalna(sciana5, 0, 3, 6);
             gl.glNormal3fv(norm5,0);
             
-            gl.glColor3f(1.0f,0.0f,1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(1.0f,-1.0f,1.0f);
+           // gl.glColor3f(1.0f,0.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,1.0f);
             //œciana górna
             float[] sciana6={1.0f,1.0f,1.0f,
                         1.0f,1.0f,-1.0f,
@@ -799,17 +864,15 @@ public class JOGLZad1 implements GLEventListener {
             float[] norm6=WyznaczNormalna(sciana6, 0, 3, 6);
             gl.glNormal3fv(norm6,0);
             
-            gl.glColor3f(0.1f,0.4f,1.0f);
-            gl.glVertex3f(1.0f,1.0f,1.0f);
-            gl.glVertex3f(1.0f,1.0f,-1.0f);
-            gl.glVertex3f(-1.0f,1.0f,-1.0f);
-            gl.glVertex3f(-1.0f,1.0f,1.0f);
+            //gl.glColor3f(0.1f,0.4f,1.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(1.0f,1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(1.0f,1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f,1.0f,-1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f,1.0f,1.0f);
         gl.glEnd();
 
     }
-    
-    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-    }*/
+
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
