@@ -258,7 +258,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
-        rysowanieSzescianu(gl);
+        rysowanieOstroslupa(gl);
        /* gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
         gl.glScalef(0.3f, 0.3f, 0.3f);
        
@@ -701,31 +701,36 @@ public class JOGLZad1 implements GLEventListener {
         }
     gl.glEnd();
     }
-    
+    */
     public void rysowanieOstroslupa(GL gl){
-        gl.glBegin(GL.GL_QUADS);//podstawa
         
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
+        gl.glBegin(GL.GL_QUADS);//podstawa
+
             float[] podstawa={-1.0f,-1.0f,1.0f,
                                 -1.0f,-1.0f,1.0f,
                                 1.0f,-1.0f,-1.0f};
             float[] norm1=WyznaczNormalna(podstawa, 0, 3, 6);
+            
+            
             gl.glNormal3fv(norm1,0);
-            gl.glColor3f(0.1f,0.4f,1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,1.0f);
-            gl.glVertex3f(-1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(1.0f,-1.0f,-1.0f);
-            gl.glVertex3f(1.0f,-1.0f,1.0f);
+            //gl.glColor3f(0.1f,0.4f,1.0f);
+            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,-1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,1.0f);
         gl.glEnd();
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t2.getTextureObject());
         gl.glBegin(GL.GL_TRIANGLES);
             float[] sciana1={-1.0f,-1.0f,1.0f,
                                 1.0f,-1.0f,1.0f,
                                 0.0f, 0.0f, 0.0f};
             float[] norm2=WyznaczNormalna(sciana1, 0, 3, 6);
             gl.glNormal3fv(norm2,0);
-            gl.glColor3f(0.3f,0.1f,0.5f);
-            gl.glVertex3f(-1.0f,-1.0f,1.0f);
-            gl.glVertex3f(1.0f,-1.0f,1.0f);
-            gl.glVertex3f(0.0f, 0.0f, 0.0f);
+            //gl.glColor3f(0.3f,0.1f,0.5f);
+            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1.0f,-1.0f,1.0f);
+            gl.glTexCoord2f(0.5f, 0.5f); gl.glVertex3f(0.0f, 0.0f, 0.0f);
         gl.glEnd();
         gl.glBegin(GL.GL_TRIANGLES);
             float[] sciana2={1.0f,-1.0f,1.0f,
@@ -733,7 +738,7 @@ public class JOGLZad1 implements GLEventListener {
                              0.0f, 0.0f, 0.0f};
             float[] norm3=WyznaczNormalna(sciana2, 0, 3, 6);
             gl.glNormal3fv(norm3,0);
-            gl.glColor3f(0.6f,0.2f,0.8f);
+            //gl.glColor3f(0.6f,0.2f,0.8f);
             gl.glVertex3f(1.0f,-1.0f,1.0f);
             gl.glVertex3f(1.0f,-1.0f,-1.0f);
             gl.glVertex3f(0.0f, 0.0f, 0.0f);
@@ -744,7 +749,7 @@ public class JOGLZad1 implements GLEventListener {
                              0.0f, 0.0f, 0.0f};
             float[] norm4=WyznaczNormalna(sciana3, 0, 3, 6);
             gl.glNormal3fv(norm4,0);
-            gl.glColor3f(0.2f,0.2f,0.2f);
+            //gl.glColor3f(0.2f,0.2f,0.2f);
             gl.glVertex3f(1.0f,-1.0f,-1.0f);
             gl.glVertex3f(-1.0f,-1.0f,-1.0f);
             gl.glVertex3f(0.0f, 0.0f, 0.0f);
@@ -755,14 +760,14 @@ public class JOGLZad1 implements GLEventListener {
                              0.0f, 0.0f, 0.0f};
             float[] norm5=WyznaczNormalna(sciana4, 0, 3, 6);
             gl.glNormal3fv(norm5,0);
-            gl.glColor3f(0.1f,0.8f,0.3f);
+           // gl.glColor3f(0.1f,0.8f,0.3f);
             gl.glVertex3f(-1.0f,-1.0f,-1.0f);
             gl.glVertex3f(-1.0f,-1.0f,1.0f);
             gl.glVertex3f(0.0f, 0.0f, 0.0f);
         gl.glEnd();
             
     }
-    */
+    
     public float[] WyznaczNormalna(float[] punkty, int ind1, int ind2, int ind3) {
          float[] norm = new float[3];
          float[] wektor0 = new float[3];
