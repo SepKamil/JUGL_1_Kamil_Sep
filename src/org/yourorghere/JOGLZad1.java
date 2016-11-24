@@ -79,6 +79,12 @@ public class JOGLZad1 implements GLEventListener {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     kat -= 2.0f;
                 }
+                if (e.getKeyChar() == ']') {
+                    xrot -= 2.0f;
+                }
+                if (e.getKeyChar() == '[') {
+                    xrot += 2.0f;
+                }
                 if (e.getKeyChar() == 'q') {
                     ambientLight = new float[]{ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, 1};
                 }
@@ -787,8 +793,12 @@ public class JOGLZad1 implements GLEventListener {
     public void rysujScene(GL gl, Texture t1, Texture t2, Texture t3) {
 
         //gl.glRotatef(kat, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
+        
+        gl.glPushMatrix();
+        kop.Rysuj(gl, x, z, kat);
+        gl.glPopMatrix();
         gl.glRotatef(kat, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
-        gl.glTranslatef(x, 96.0f, -90.0f+z);
+        gl.glTranslatef(x, 98.0f, -90.0f+z);
         
 //szescian
         gl.glColor3f(1.0f, 1.0f, 1.0f);
@@ -870,7 +880,8 @@ public class JOGLZad1 implements GLEventListener {
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, 100.0f);
         gl.glEnd();
-        kop.Rysuj(gl);
+        
+        
     }
     public void rysowanieSzescianu(GL gl){
         float[] sciana1={-1.0f,-1.0f,1.0f,
