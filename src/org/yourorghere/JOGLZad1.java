@@ -37,8 +37,9 @@ public class JOGLZad1 implements GLEventListener {
     public static float lightPos2[] = {-12.0f, 2.0f, 0.0f, 1.0f};//pozycja ?wiat?a
     public static Koparka kop;
     public static int czas=0;
-    static BufferedImage image1 = null,image2 = null;
-    static Texture t1 = null, t2 = null;
+    static BufferedImage image1 = null,image2 = null, image3=null;
+    static Texture t1 = null, t2 = null, t3=null;
+    public static float x=0.0f, z=0.0f, kat=0.0f;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -67,16 +68,16 @@ public class JOGLZad1 implements GLEventListener {
         frame.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    xrot -= 1.0f;
+                    przesun(1.5f);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    xrot += 1.0f;
+                    przesun(-1.5f);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    yrot += 1.0f;
+                    kat += 2.0f;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    yrot -= 1.0f;
+                    kat -= 2.0f;
                 }
                 if (e.getKeyChar() == 'q') {
                     ambientLight = new float[]{ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, 1};
@@ -199,8 +200,9 @@ public class JOGLZad1 implements GLEventListener {
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
         try
         {
-            image1 = ImageIO.read(getClass().getResourceAsStream("/pokemon.jpg"));
-            image2 = ImageIO.read(getClass().getResourceAsStream("/android.jpg"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/bok.jpg"));
+            image2 = ImageIO.read(getClass().getResourceAsStream("/trawa.jpg"));
+            image3 = ImageIO.read(getClass().getResourceAsStream("/niebo.jpg"));
         } catch (Exception exc) {
             JOptionPane.showMessageDialog(null, exc.toString());
             return;
@@ -208,6 +210,7 @@ public class JOGLZad1 implements GLEventListener {
 
         t1 = TextureIO.newTexture(image1, false);
         t2 = TextureIO.newTexture(image2, false);
+        t3 = TextureIO.newTexture(image3, false);
 
         gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND | GL.GL_MODULATE);
         gl.glEnable(GL.GL_TEXTURE_2D);
@@ -234,7 +237,7 @@ public class JOGLZad1 implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(30.0f, h, 2.0, 10.0);
+        glu.gluPerspective(90.0f, h, 2.0, 300.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -253,36 +256,14 @@ public class JOGLZad1 implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(0.0f, 0.0f, -8.0f); //przesuni?cie o 6 jednostek
+       //gl.glTranslatef(0.0f, 96.0f, -99.0f); //przesuni?cie o 6 jednostek
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
-        rysowanieOstroslupa(gl);
-       /* gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-        gl.glScalef(0.3f, 0.3f, 0.3f);
-       
-        gl.glPushMatrix();
+        rysujScene(gl,t1, t2, t3);
         
-        /*for (int j = 0; j < 10; j++) {
-            gl.glPushMatrix();
-            for (int i = 0; i < 10; i++) {
-                drzewo(gl);
-                gl.glTranslatef(0.0f, 1.5f, 0.0f);
-            }
-            gl.glPopMatrix();
-            gl.glTranslatef(1.5f, 0.0f, 0.0f);
-        }
-        gl.glPopMatrix();
-        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
-*/
-
-            /*kop.zmienKat1(-0.04f);
-            kop.zmienKat2(-0.04f);
-            kop.zmienKat3(-0.03f);
-        kop.Rysuj(gl);*/
-        
-        
+ 
     }
     void drzewo(GL gl) {
         gl.glColor3f(0.14f,0.55f,0.13f);
@@ -792,6 +773,105 @@ public class JOGLZad1 implements GLEventListener {
  
          return norm;
      }
+    
+    public static void przesun(float d){
+        if(x-d*Math.sin(kat*(Math.PI/180.0f))<97 && x-d*Math.sin(kat*(Math.PI/180.0f))>-97){
+            x-=d*Math.sin(kat*(Math.PI/180.0f));
+        }
+        if(z+d*Math.cos(kat*(Math.PI/180.0f)) < 187 && z+d*Math.cos(kat*(Math.PI/180.0f)) > -7){
+            z+=d*Math.cos(kat*(Math.PI/180.0f));
+        }
+        
+    }
+    
+    public void rysujScene(GL gl, Texture t1, Texture t2, Texture t3) {
+
+        //gl.glRotatef(kat, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
+        gl.glRotatef(kat, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
+        gl.glTranslatef(x, 96.0f, -90.0f+z);
+        
+//szescian
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+//za³adowanie tekstury wczytanej wczeœniej z pliku krajobraz.bmp
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
+        gl.glBegin(GL.GL_QUADS);
+//œciana przednia
+        gl.glNormal3f(0.0f, 0.0f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(-100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 0.9f);
+        gl.glVertex3f(100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(1.0f, 0.9f);
+        gl.glVertex3f(-100.0f, -100.0f, 100.0f);
+//œciana tylnia
+        gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.9f);
+        gl.glVertex3f(-100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(0.0f, 0.9f);
+        gl.glVertex3f(100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, -100.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(-100.0f, 100.0f, -100.0f);
+//œciana lewa
+        gl.glNormal3f(1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(-100.0f, 100.0f, -100.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(-100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(1.0f, 0.9f);
+        gl.glVertex3f(-100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 0.9f);
+        gl.glVertex3f(-100.0f, -100.0f, -100.0f);
+//œciana prawa
+        gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.9f);
+        gl.glVertex3f(100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(1.0f, 0.9f);
+        gl.glVertex3f(100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, -100.0f);
+        gl.glEnd();
+
+//œciana dolna
+//za³adowanie tekstury wczytanej wczeœniej z pliku niebo.bmp
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t2.getTextureObject());
+        //ustawienia aby tekstura siê powiela³a
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+        gl.glBegin(GL.GL_QUADS);
+        gl.glNormal3f(0.0f, 1.0f, 0.0f);
+ //koordynaty ustawienia 16 x 16 kwadratów powielonej tekstury na œcianie dolnej
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 32.0f);
+        gl.glVertex3f(100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(32.0f, 32.0f);
+        gl.glVertex3f(-100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(32.0f, 0.0f);
+        gl.glVertex3f(-100.0f, -100.0f, 100.0f);
+        gl.glEnd();
+
+ //œciana gorna
+//za³adowanie tekstury wczytanej wczeœniej z pliku trawa.bmp
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t3.getTextureObject());
+        gl.glBegin(GL.GL_QUADS);
+        gl.glNormal3f(0.0f, -1.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(-100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(-100.0f, 100.0f, -100.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, -100.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(100.0f, 100.0f, 100.0f);
+        gl.glEnd();
+        kop.Rysuj(gl);
+    }
     public void rysowanieSzescianu(GL gl){
         float[] sciana1={-1.0f,-1.0f,1.0f,
                         1.0f,-1.0f,1.0f,
